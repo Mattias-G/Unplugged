@@ -15,8 +15,7 @@ public class PlayerMovement : MonoBehaviour {
 
 	private Rigidbody2D playerBody;
 
-	public float stillTime = 0;
-	public float XX = 0;
+	private float stillTime = 0;
 
 	void Start () {
 		playerBody = gameObject.GetComponent<Rigidbody2D>();
@@ -77,7 +76,6 @@ public class PlayerMovement : MonoBehaviour {
 			stillTime = 0;
 			playerBody.AddForce(playerBody.mass * jumpBackUpForce * Vector3.up);
 			playerBody.AddTorque(playerBody.mass * jumpBackUpTorque * -Mathf.Min(Mathf.Abs(playerBody.rotation), 120) * Mathf.Sign(playerBody.rotation));
-			XX = playerBody.rotation;
 		}
 		
 	}
