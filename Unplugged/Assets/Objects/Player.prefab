@@ -146,7 +146,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0
+  m_LinearDrag: 1
   m_AngularDrag: 0.05
   m_GravityScale: 1
   m_Material: {fileID: 0}
@@ -201,6 +201,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 463df54b6bdab75479939827fc7d4832, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  acceleration: 25
+  maxMovementSpeed: 3.5
+  walkingFriction: 0.93
 --- !u!212 &212269936331244830
 SpriteRenderer:
   m_ObjectHideFlags: 1
