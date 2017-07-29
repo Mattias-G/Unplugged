@@ -9,11 +9,17 @@ public class PlayerMovement : MonoBehaviour {
 	[Range(0f, 25f)]
 	public float maxMovementSpeed = 3.5f;
 	public float walkingFriction = 0.93f;
+	public float jumpBackUpForce = 50;
+	public float jumpBackUpTorque= 0.5f;
+
 
 	private Rigidbody2D playerBody;
 
+	public float stillTime = 0;
+	public float XX = 0;
+
 	void Start () {
-		playerBody = transform.GetComponent<Rigidbody2D>();
+		playerBody = gameObject.GetComponent<Rigidbody2D>();
 	}
 	
 	void Update () {
@@ -24,7 +30,15 @@ public class PlayerMovement : MonoBehaviour {
 	{
 		float playerMovementX = 0;
 		float playerMovementY = 0;
-		
+
+		playerBody.rotation = playerBody.rotation % 360;
+		if (playerBody.rotation > 180)
+			playerBody.rotation -= 360;
+		if (playerBody.rotation <= -180)
+			playerBody.rotation += 360;
+
+
+
 		playerMovementX = Input.GetAxisRaw("Horizontal");
 		//playerMovementY = Input.GetAxisRaw("Vertical");
 
@@ -50,5 +64,21 @@ public class PlayerMovement : MonoBehaviour {
 		{
 			playerBody.velocity *= walkingFriction;
 		}
+
+		stillTime += Time.fixedDeltaTime;
+		if (Mathf.Abs(playerBody.angularVelocity) > 1)
+		{
+			stillTime = 0;
+		}
+
+
+		if (Mathf.Abs(playerBody.rotation) > 45 && stillTime > 1)
+		{
+			stillTime = 0;
+			playerBody.AddForce(playerBody.mass * jumpBackUpForce * Vector3.up);
+			playerBody.AddTorque(playerBody.mass * jumpBackUpTorque * -Mathf.Min(Mathf.Abs(playerBody.rotation), 120) * Mathf.Sign(playerBody.rotation));
+			XX = playerBody.rotation;
+		}
+		
 	}
 }
