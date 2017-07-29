@@ -21,6 +21,8 @@ GameObject:
   - component: {fileID: 4888127122324608}
   - component: {fileID: 212056233573483676}
   - component: {fileID: 61529663668800004}
+  - component: {fileID: 61903239831833182}
+  - component: {fileID: 114618182767244820}
   m_Layer: 0
   m_Name: Socket
   m_TagString: Untagged
@@ -34,13 +36,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1573098713098370}
-  m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
-  m_LocalPosition: {x: -2.86, y: 2.029, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: 0.0000026822088, w: 1}
+  m_LocalPosition: {x: -1.02, y: -1.23, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &61529663668800004
 BoxCollider2D:
   m_ObjectHideFlags: 1
@@ -66,6 +68,42 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.5, y: 0.1794579}
   m_EdgeRadius: 0
+--- !u!61 &61903239831833182
+BoxCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1573098713098370}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -0.02782203}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.5, y: 0.5}
+    newSize: {x: 0.5, y: 0.5}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.4523469, y: 0.10430956}
+  m_EdgeRadius: 0
+--- !u!114 &114618182767244820
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1573098713098370}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3a6c02d088da774e8d3210aad5664bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!212 &212056233573483676
 SpriteRenderer:
   m_ObjectHideFlags: 1
