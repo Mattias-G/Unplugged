@@ -12,7 +12,7 @@ public class ShootCable : MonoBehaviour {
 	private Rigidbody2D segment;
 	private SliderJoint2D slider;
 	private Quaternion direction;
-	private bool justAdded, justRemoved;
+	//private bool justAdded, justRemoved;
 
 	void Start () {
 		rigidbody = GetComponent<Rigidbody2D>();
@@ -21,17 +21,17 @@ public class ShootCable : MonoBehaviour {
 	
 	void Update () {
 		if (segment) {
-			if (slider.jointTranslation > .3)
-				justAdded = false;
-			if (slider.jointTranslation < .2)
-				justRemoved = false;
+			//if (slider.jointTranslation > .3)
+			//	justAdded = false;
+			//if (slider.jointTranslation < .2)
+			//	justRemoved = false;
 
-			if (slider.jointTranslation > .5 && LengthRemaining > 0 && !justRemoved) { 
+			if (slider.jointTranslation > .6 && LengthRemaining > 0) { 
 				ShootSegment(segment.transform.position - segment.transform.forward);
-			} else if (slider.jointTranslation < 0.1 && !justAdded) {
+			} else if (slider.jointTranslation < 0.05) {
 				Destroy(segment.gameObject);
 				if (segments.Count > 0) {
-					justRemoved = true;
+					//justRemoved = true;
 					segment = segments.Pop();
 					segment.GetComponent<HingeJoint2D>().enabled = false;
 					slider = segment.GetComponent<SliderJoint2D>();
@@ -82,7 +82,7 @@ public class ShootCable : MonoBehaviour {
 		slider.connectedAnchor = Vector2.zero;
 		slider.useLimits = LengthRemaining == 0;
 
-		justAdded = true;
+		//justAdded = true;
 	}
 
 	private int LengthRemaining {
