@@ -252,8 +252,6 @@ MonoBehaviour:
   walkingFriction: 0.93
   jumpBackUpForce: 50
   jumpBackUpTorque: 0.5
-  stillTime: 0
-  XX: 0
 --- !u!212 &212269936331244830
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -428,7 +426,7 @@ SpriteRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1505065126974602}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_MotionVectors: 1

@@ -18,7 +18,7 @@ public class PlayerMovement : MonoBehaviour {
 	private float stillTime = 0;
 
 	void Start () {
-		playerBody = gameObject.GetComponent<Rigidbody2D>();
+		playerBody = GetComponent<Rigidbody2D>();
 	}
 	
 	void Update () {
@@ -52,6 +52,7 @@ public class PlayerMovement : MonoBehaviour {
 			playerBody.AddForce(playerAcceleration);
 
 			transform.GetChild(1).GetComponent<FeetDisplacement>().Move(playerMovementX / 2);
+			GetComponent<PlayerEnergy>().ChangeEnergy(-Time.deltaTime);
 		}
 
 		//Is on ground
@@ -62,21 +63,21 @@ public class PlayerMovement : MonoBehaviour {
 		if (hit.collider != null)
 		{
 			playerBody.velocity *= walkingFriction;
+
+			stillTime += Time.fixedDeltaTime;
+			if (Mathf.Abs(playerBody.angularVelocity) > 1)
+			{
+				stillTime = 0;
+			}
+
+			if (Mathf.Abs(playerBody.rotation) > 45 && stillTime > 1)
+			{
+				stillTime = 0;
+				playerBody.AddForce(playerBody.mass * jumpBackUpForce * Vector3.up);
+				playerBody.AddTorque(playerBody.mass * jumpBackUpTorque * -Mathf.Min(Mathf.Abs(playerBody.rotation), 120) * Mathf.Sign(playerBody.rotation));
+			}
+
 		}
 
-		stillTime += Time.fixedDeltaTime;
-		if (Mathf.Abs(playerBody.angularVelocity) > 1)
-		{
-			stillTime = 0;
-		}
-
-
-		if (Mathf.Abs(playerBody.rotation) > 45 && stillTime > 1)
-		{
-			stillTime = 0;
-			playerBody.AddForce(playerBody.mass * jumpBackUpForce * Vector3.up);
-			playerBody.AddTorque(playerBody.mass * jumpBackUpTorque * -Mathf.Min(Mathf.Abs(playerBody.rotation), 120) * Mathf.Sign(playerBody.rotation));
-		}
-		
 	}
 }
