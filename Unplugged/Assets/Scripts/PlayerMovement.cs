@@ -51,8 +51,11 @@ public class PlayerMovement : MonoBehaviour {
 			playerAcceleration *= acceleration * playerBody.mass;
 			playerBody.AddForce(playerAcceleration);
 
-			transform.GetChild(1).GetComponent<FeetDisplacement>().Move(playerMovementX / 2);
-			GetComponent<PlayerEnergy>().ChangeEnergy(-Time.deltaTime);
+			if (playerMovementX != 0)
+			{
+				transform.GetChild(1).GetComponent<FeetDisplacement>().Move(playerMovementX / 2);
+				GetComponent<PlayerEnergy>().ChangeEnergy(-Time.deltaTime);
+			}
 		}
 
 		//Is on ground
