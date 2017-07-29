@@ -279,4 +279,4 @@ SliderJoint2D:
   m_UseLimits: 1
   m_TranslationLimits:
     m_LowerTranslation: 0
-    m_UpperTranslation: 2
+    m_UpperTranslation: 0.6
