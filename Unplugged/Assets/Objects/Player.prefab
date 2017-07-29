@@ -234,6 +234,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cableSegment: {fileID: 50951433881405814, guid: eaa724ba5a5f0d545b48e8bba0763081,
     type: 2}
+  cablePlug: {fileID: 50369002004676578, guid: 8778e3ece3bb7ab4fb2cb45fe12b5893, type: 2}
   maxLength: 5
 --- !u!114 &114711295856832884
 MonoBehaviour:
