@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4185730375760554}
   - component: {fileID: 212700272805338894}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: PlayerPowerMeter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39,7 +39,7 @@ GameObject:
   - component: {fileID: 50687867218896762}
   - component: {fileID: 61808391397340760}
   - component: {fileID: 114711295856832884}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -55,7 +55,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4055449993084886}
   - component: {fileID: 212891521730554488}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: PlayerPowerMeterPower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -72,7 +72,7 @@ GameObject:
   - component: {fileID: 4889179549463066}
   - component: {fileID: 212269936331244830}
   - component: {fileID: 114347144308665100}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: PlayerFeet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -201,6 +201,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 463df54b6bdab75479939827fc7d4832, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  acceleration: 5
+  maxMovementSpeed: 2
 --- !u!212 &212269936331244830
 SpriteRenderer:
   m_ObjectHideFlags: 1

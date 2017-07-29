@@ -5,42 +5,61 @@ using UnityEngine;
 public class ShootCable : MonoBehaviour {
 
 	public Rigidbody2D cableSegment;
+	public int maxLength = 5;
 
 	private new Rigidbody2D rigidbody;
+	private Stack<Rigidbody2D> segments;
 	private Rigidbody2D segment;
 	private SliderJoint2D slider;
-	private HingeJoint2D hinge;
 	private Quaternion direction;
-	private int lengthRemaining;
+	private bool justAdded, justRemoved;
 
 	void Start () {
 		rigidbody = GetComponent<Rigidbody2D>();
+		segments = new Stack<Rigidbody2D>();
 	}
 	
 	void Update () {
-		if (Input.GetMouseButtonUp(0)) {
+		if (segment) {
+			if (slider.jointTranslation > .3)
+				justAdded = false;
+			if (slider.jointTranslation < .2)
+				justRemoved = false;
+
+			if (slider.jointTranslation > .5 && LengthRemaining > 0 && !justRemoved) { 
+				ShootSegment(segment.transform.position - segment.transform.forward);
+			} else if (slider.jointTranslation < 0.1 && !justAdded) {
+				Destroy(segment.gameObject);
+				if (segments.Count > 0) {
+					justRemoved = true;
+					segment = segments.Pop();
+					segment.GetComponent<HingeJoint2D>().enabled = false;
+					slider = segment.GetComponent<SliderJoint2D>();
+					slider.enabled = true;
+				} else {
+					segment = null;
+				}
+			}
+		} else if (Input.GetMouseButtonUp(0)) {
 			var mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 			var delta = mousePosition - transform.position;
 			var angle = Mathf.Atan2(delta.y, delta.x);
 			direction = Quaternion.Euler(0, 0, angle * 180 / Mathf.PI);
-			lengthRemaining = 5;
-			segment = null;
 			ShootSegment(rigidbody.position);
 			segment.AddRelativeForce(new Vector2(2, 0), ForceMode2D.Impulse);
 		}
+	}
 
-		
-		if (segment && slider.jointTranslation > .9) {
-			if (lengthRemaining > 0)
-				ShootSegment(segment.transform.position - segment.transform.forward);
-			else {
-				slider.enabled = false;
-				var hinge = segment.GetComponent<HingeJoint2D>();
-				hinge.enabled = true;
-				hinge.connectedBody = rigidbody;
-				hinge.autoConfigureConnectedAnchor = true;
-				//hinge.connectedAnchor = Vector2.c
-				print(hinge.connectedAnchor);
+	void FixedUpdate() {
+		if (segment) {
+			var vertical = Input.GetAxisRaw("Vertical");
+			if (vertical != 0) {
+				slider.useMotor = true;
+				var motor = slider.motor;
+				motor.motorSpeed = Mathf.Sign(vertical);
+				slider.motor = motor;
+			} else {
+				slider.useMotor = false;
 			}
 		}
 	}
@@ -49,6 +68,7 @@ public class ShootCable : MonoBehaviour {
 		var newSegment = Instantiate<Rigidbody2D>(cableSegment, position, direction);
 
 		if (segment) {
+			segments.Push(segment);
 			segment.GetComponent<SliderJoint2D>().enabled = false;
 			var hinge = segment.GetComponent<HingeJoint2D>();
 			hinge.enabled = true;
@@ -59,10 +79,15 @@ public class ShootCable : MonoBehaviour {
 		slider = segment.GetComponent<SliderJoint2D>();
 		slider.enabled = true;
 		slider.connectedBody = rigidbody;
-		hinge = segment.GetComponent<HingeJoint2D>();
-		//hinge.enabled = true;
-		//hinge.connectedBody = rigidbody;
+		slider.connectedAnchor = Vector2.zero;
+		slider.useLimits = LengthRemaining == 0;
 
-		lengthRemaining--;
+		justAdded = true;
+	}
+
+	private int LengthRemaining {
+		get {
+			return maxLength - segments.Count - (segment ? 1 : 0);
+		}
 	}
 }

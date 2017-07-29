@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4848183872468846}
   - component: {fileID: 212873527363838084}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Joint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39,7 +39,7 @@ GameObject:
   - component: {fileID: 50951433881405814}
   - component: {fileID: 233144491299690360}
   - component: {fileID: 234793809039023074}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cable Segment
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -55,7 +55,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4546235742639834}
   - component: {fileID: 212668389270996232}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Segment
   m_TagString: Untagged
   m_Icon: {fileID: 0}
