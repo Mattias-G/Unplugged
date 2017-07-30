@@ -42,7 +42,8 @@ public class ShootCable : MonoBehaviour {
 			var vertical = Input.GetAxisRaw("Vertical");
 
 			if (slider.jointTranslation > .5 && LengthRemaining > 0 && (vertical > 0 || IsShooting)) {
-				CreateSegment(segment.transform.position + segment.transform.right * .1f);
+				//CreateSegment(segment.transform.position + segment.transform.right * .0f);
+				CreateSegment(transform.position);
 			} else if (slider.jointTranslation < 0 && vertical < 0) {
 				Destroy(segment.gameObject);
 				if (segments.Count > 0) {
@@ -77,7 +78,7 @@ public class ShootCable : MonoBehaviour {
 	private void CreatePlug() {
 		plug = Instantiate<Rigidbody2D>(cablePlug, segment.transform.position + segment.transform.right, direction);
 		plug.GetComponent<AnchoredJoint2D>().connectedBody = segment;
-		plug.AddRelativeForce(new Vector2(10, 0), ForceMode2D.Impulse);
+		plug.AddRelativeForce(new Vector2(20, 0), ForceMode2D.Impulse);
 	}
 
 	private void CreateSegment(Vector3 position) {
