@@ -61,9 +61,9 @@ public class Plug : MonoBehaviour {
 	}
 
 	public void Disconnect() {
-		rigidbody.bodyType = RigidbodyType2D.Dynamic;
 		connectedSocket.Disconnect();
 		connectedSocket = null;
+		rigidbody.bodyType = RigidbodyType2D.Dynamic;
 		lerp = 0;
 	}
 }
