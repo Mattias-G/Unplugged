@@ -4,21 +4,28 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour {
 
-	[Range(0f, 100f)]
-	public float acceleration = 25f;
 	[Range(0f, 25f)]
 	public float maxMovementSpeed = 3.5f;
-	public float walkingFriction = 0.93f;
 	public float jumpBackUpForce = 50;
 	public float jumpBackUpTorque= 0.5f;
 
+	private float angularSpeed;
 
 	private Rigidbody2D playerBody;
+	private FeetDisplacement feet;
+	private PlayerEnergy energy;
+	private List<HingeJoint2D> wheels;
 
 	private float stillTime = 0;
 
 	void Start () {
 		playerBody = GetComponent<Rigidbody2D>();
+		feet = transform.GetChild(1).GetComponent<FeetDisplacement>();
+		energy = GetComponent<PlayerEnergy>();
+		wheels = new List<HingeJoint2D>();
+		wheels.Add(transform.GetChild(5).GetComponent<HingeJoint2D>());
+		wheels.Add(transform.GetChild(6).GetComponent<HingeJoint2D>());
+		angularSpeed = 360 * maxMovementSpeed / (2 * Mathf.PI * GetComponentInChildren<CircleCollider2D>().radius);
 	}
 	
 	void Update () {
@@ -30,13 +37,12 @@ public class PlayerMovement : MonoBehaviour {
 		//Is on ground
 		var pos = new Vector2(transform.position.x, transform.position.y);
 		var dir = Vector2.down;
-		var layer = 1 << LayerMask.NameToLayer("Ground");
-		var hit = Physics2D.Raycast(pos, dir, 0.5f, layer);
+		var layer = LayerMask.GetMask("Ground");
+		var isOnGround = Physics2D.Raycast(pos, dir, 0.5f, layer);
 
 		var lyingDown = Mathf.Abs(playerBody.rotation) > 45;
 
 		float playerMovementX = 0;
-		float playerMovementY = 0;
 
 		playerBody.rotation = playerBody.rotation % 360;
 		if (playerBody.rotation > 180)
@@ -45,33 +51,19 @@ public class PlayerMovement : MonoBehaviour {
 			playerBody.rotation += 360;
 
 
-		if (!lyingDown || hit.collider == null)
+		if (!lyingDown || !isOnGround)
 		{
 			playerMovementX = Input.GetAxisRaw("Horizontal");
-			//playerMovementY = Input.GetAxisRaw("Vertical");
+			SetSpeed(angularSpeed * playerMovementX);
 
-			var playerAcceleration = new Vector2(playerMovementX, playerMovementY);
-			if (playerAcceleration.sqrMagnitude > 1)
-				playerAcceleration.Normalize();
-
-			var dx = Mathf.Abs(playerAcceleration.x + playerBody.velocity.x) - maxMovementSpeed;
-			if (dx < 0)
-			{
-				playerAcceleration *= acceleration * playerBody.mass;
-				playerBody.AddForce(playerAcceleration);
-
-				if (playerMovementX != 0)
-				{
-					transform.GetChild(1).GetComponent<FeetDisplacement>().Move(playerMovementX / 2);
-					GetComponent<PlayerEnergy>().ChangeEnergy(-Time.deltaTime);
-				}
+			if (playerMovementX != 0) {
+				feet.Move(playerMovementX / 2);
+				energy.ChangeEnergy(-Time.deltaTime);
 			}
 		}
 		
-		if (hit.collider != null)
+		if (isOnGround)
 		{
-			playerBody.velocity *= walkingFriction;
-
 			stillTime += Time.fixedDeltaTime;
 			if (Mathf.Abs(playerBody.angularVelocity) > 1)
 			{
@@ -87,5 +79,14 @@ public class PlayerMovement : MonoBehaviour {
 
 		}
 
+	}
+
+	private void SetSpeed(float speed)
+	{
+		wheels.ForEach(wheel => {
+			var motor = wheel.motor;
+			motor.motorSpeed = speed;
+			wheel.motor = motor;
+		});
 	}
 }
