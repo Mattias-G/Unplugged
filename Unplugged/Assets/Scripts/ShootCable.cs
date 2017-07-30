@@ -64,7 +64,8 @@ public class ShootCable : MonoBehaviour {
 					slider.enabled = true;
 					slider.useLimits = UseSliderLimits;
 				} else {
-					plug.Disconnect();
+					if (plug.IsConnected())
+						plug.Disconnect();
 					Destroy(plug.gameObject);
 					GetComponent<PlayerEnergy>().SetPlug(null);
 					segment = null;
