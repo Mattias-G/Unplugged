@@ -17,7 +17,7 @@ public class ShootCable : MonoBehaviour {
 	private float shootingTimer;
 
 	void Start () {
-		rigidbody = GetComponent<Rigidbody2D>();
+		rigidbody = GetComponentInChildren<HingeJoint2D>().GetComponent<Rigidbody2D>(); ;
 		segments = new Stack<Rigidbody2D>();
 	}
 	
@@ -60,7 +60,7 @@ public class ShootCable : MonoBehaviour {
 			}
 
 			if (vertical != 0) {
-				SetMotorSpeed(Mathf.Sign(vertical));
+				SetMotorSpeed(Mathf.Sign(vertical) * 2);
 				slider.useMotor = true;
 			} else {
 				SetMotorSpeed(0);
