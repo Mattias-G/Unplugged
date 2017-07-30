@@ -9,7 +9,7 @@ public class ShootCable : MonoBehaviour {
 	public int maxLength = 10;
 
 	private new Rigidbody2D rigidbody;
-	private Rigidbody2D plug;
+	private Plug plug;
 	private Stack<Rigidbody2D> segments;
 	private Rigidbody2D segment;
 	private SliderJoint2D slider;
@@ -32,7 +32,13 @@ public class ShootCable : MonoBehaviour {
 				CreateSegment(rigidbody.position + delta.normalized * 0.3f);
 				CreatePlug();
 			}
-
+		} else {
+			if (Input.GetMouseButtonDown(1)) {
+				print("hej");
+				if (plug.IsConnected()) {
+					plug.Disconnect();
+				}
+			}
 		}
 	}
 
@@ -77,10 +83,11 @@ public class ShootCable : MonoBehaviour {
 	}
 
 	private void CreatePlug() {
-		plug = Instantiate<Rigidbody2D>(cablePlug, segment.transform.position + segment.transform.right, direction);
-		plug.GetComponent<AnchoredJoint2D>().connectedBody = segment;
-		plug.AddRelativeForce(new Vector2(20, 0), ForceMode2D.Impulse);
-		GetComponent<PlayerEnergy>().SetPlug(plug.GetComponent<Plug>());
+		var plugBody = Instantiate<Rigidbody2D>(cablePlug, segment.transform.position + segment.transform.right, direction);
+		plugBody.GetComponent<AnchoredJoint2D>().connectedBody = segment;
+		plugBody.AddRelativeForce(new Vector2(20, 0), ForceMode2D.Impulse);
+		GetComponent<PlayerEnergy>().SetPlug(plugBody.GetComponent<Plug>());
+		plug = plugBody.GetComponent<Plug>();
 	}
 
 	private void CreateSegment(Vector3 position) {

@@ -7,6 +7,7 @@ public class Plug : MonoBehaviour {
 	private const float LerpTimeSeconds = 0.1f;
 
 	private Socket connectedSocket;
+	private new Rigidbody2D rigidbody;
 
 	private Vector3 initialPosition;
 	private Quaternion initialRotation;
@@ -15,6 +16,7 @@ public class Plug : MonoBehaviour {
 	private float lerp;
 
 	void Start () {
+		rigidbody = GetComponent<Rigidbody2D>();
 	}
 	
 	void Update () {
@@ -29,7 +31,7 @@ public class Plug : MonoBehaviour {
 	void OnTriggerEnter2D(Collider2D collider)
 	{
 		var socket = collider.gameObject.GetComponent<Socket>();
-		if (socket)
+		if (socket && socket.CanConnect())
 		{
 			if (!connectedSocket)
 			{
@@ -38,11 +40,10 @@ public class Plug : MonoBehaviour {
 				if (Mathf.Abs(angleDiff) < 70)  // How big an interval should we allow?
 				{
 					connectedSocket = socket;
-					socket.connect(this);
+					socket.Connect(this);
 
-					var body = GetComponent<Rigidbody2D>();
-					body.velocity = Vector2.zero;
-					body.bodyType = RigidbodyType2D.Static;
+					rigidbody.velocity = Vector2.zero;
+					rigidbody.bodyType = RigidbodyType2D.Static;
 
 					initialPosition = transform.position;
 					initialRotation = transform.rotation;
@@ -57,5 +58,12 @@ public class Plug : MonoBehaviour {
 	public bool IsConnected()
 	{
 		return connectedSocket != null;
+	}
+
+	public void Disconnect() {
+		rigidbody.bodyType = RigidbodyType2D.Dynamic;
+		connectedSocket.Disconnect();
+		connectedSocket = null;
+		lerp = 0;
 	}
 }
