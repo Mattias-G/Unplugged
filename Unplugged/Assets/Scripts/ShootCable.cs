@@ -34,7 +34,6 @@ public class ShootCable : MonoBehaviour {
 			}
 		} else {
 			if (Input.GetMouseButtonDown(1)) {
-				print("hej");
 				if (plug.IsConnected()) {
 					plug.Disconnect();
 				}
@@ -44,7 +43,11 @@ public class ShootCable : MonoBehaviour {
 
 	void FixedUpdate() {
 		shootingTimer -= Time.fixedDeltaTime;
+
 		if (segment) {
+			if (shootingTimer <= 0)
+				slider.useLimits = UseSliderLimits;
+
 			var vertical = Input.GetAxisRaw("Vertical");
 
 			if (slider.jointTranslation > .5 && LengthRemaining > 0 && (vertical > 0 || IsShooting)) {
