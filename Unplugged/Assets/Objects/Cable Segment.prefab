@@ -39,6 +39,7 @@ GameObject:
   - component: {fileID: 50951433881405814}
   - component: {fileID: 233144491299690360}
   - component: {fileID: 234793809039023074}
+  - component: {fileID: 114644191472047850}
   m_Layer: 8
   m_Name: Cable Segment
   m_TagString: Untagged
@@ -179,6 +180,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 0.2}
   m_EdgeRadius: 0
+--- !u!114 &114644191472047850
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1366083797442542}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddd495ca5f45eb845962da0c0d2ee461, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  plug: {fileID: 0}
+  electrified: 0
 --- !u!198 &198869939527041418
 ParticleSystem:
   m_ObjectHideFlags: 1
@@ -190,7 +204,7 @@ ParticleSystem:
   simulationSpeed: 1
   looping: 1
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   useRigidbodyForVelocity: 1

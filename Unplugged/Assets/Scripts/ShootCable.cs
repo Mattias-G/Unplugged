@@ -31,6 +31,7 @@ public class ShootCable : MonoBehaviour {
 				direction = Quaternion.Euler(0, 0, angle);
 				CreateSegment(rigidbody.position + delta.normalized * 0.3f);
 				CreatePlug();
+				segment.GetComponent<CableData>().SetPlug(plug.GetComponent<Plug>());
 			}
 
 		}
@@ -44,6 +45,7 @@ public class ShootCable : MonoBehaviour {
 			if (slider.jointTranslation > .5 && LengthRemaining > 0 && (vertical > 0 || IsShooting)) {
 				//CreateSegment(segment.transform.position + segment.transform.right * .0f);
 				CreateSegment(transform.position);
+				segment.GetComponent<CableData>().SetPlug(plug.GetComponent<Plug>());
 			} else if (slider.jointTranslation < 0 && vertical < 0) {
 				Destroy(segment.gameObject);
 				if (segments.Count > 0) {
@@ -54,7 +56,6 @@ public class ShootCable : MonoBehaviour {
 					slider.useLimits = UseSliderLimits;
 				} else {
 					Destroy(plug.gameObject);
-					GetComponent<PlayerEnergy>().SetPlug(null);
 					segment = null;
 					plug = null;
 				}
