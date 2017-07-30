@@ -27,6 +27,14 @@ public class PlayerMovement : MonoBehaviour {
 
 	void FixedUpdate()
 	{
+		//Is on ground
+		var pos = new Vector2(transform.position.x, transform.position.y);
+		var dir = Vector2.down;
+		var layer = 1 << LayerMask.NameToLayer("Ground");
+		var hit = Physics2D.Raycast(pos, dir, 0.5f, layer);
+
+		var lyingDown = Mathf.Abs(playerBody.rotation) > 45;
+
 		float playerMovementX = 0;
 		float playerMovementY = 0;
 
@@ -37,32 +45,29 @@ public class PlayerMovement : MonoBehaviour {
 			playerBody.rotation += 360;
 
 
-
-		playerMovementX = Input.GetAxisRaw("Horizontal");
-		//playerMovementY = Input.GetAxisRaw("Vertical");
-
-		var playerAcceleration = new Vector2(playerMovementX, playerMovementY);
-		if (playerAcceleration.sqrMagnitude > 1)
-			playerAcceleration.Normalize();
-
-		var dx = Mathf.Abs(playerAcceleration.x + playerBody.velocity.x) - maxMovementSpeed;
-		if (dx < 0)
+		if (!lyingDown || hit.collider == null)
 		{
-			playerAcceleration *= acceleration * playerBody.mass;
-			playerBody.AddForce(playerAcceleration);
+			playerMovementX = Input.GetAxisRaw("Horizontal");
+			//playerMovementY = Input.GetAxisRaw("Vertical");
 
-			if (playerMovementX != 0)
+			var playerAcceleration = new Vector2(playerMovementX, playerMovementY);
+			if (playerAcceleration.sqrMagnitude > 1)
+				playerAcceleration.Normalize();
+
+			var dx = Mathf.Abs(playerAcceleration.x + playerBody.velocity.x) - maxMovementSpeed;
+			if (dx < 0)
 			{
-				transform.GetChild(1).GetComponent<FeetDisplacement>().Move(playerMovementX / 2);
-				GetComponent<PlayerEnergy>().ChangeEnergy(-Time.deltaTime);
+				playerAcceleration *= acceleration * playerBody.mass;
+				playerBody.AddForce(playerAcceleration);
+
+				if (playerMovementX != 0)
+				{
+					transform.GetChild(1).GetComponent<FeetDisplacement>().Move(playerMovementX / 2);
+					GetComponent<PlayerEnergy>().ChangeEnergy(-Time.deltaTime);
+				}
 			}
 		}
-
-		//Is on ground
-		var pos = new Vector2(transform.position.x, transform.position.y);
-		var dir = new Vector2(0, -1);
-		var layer = 1 << LayerMask.NameToLayer("Ground");
-		var hit = Physics2D.Raycast(pos, dir, 1f, layer);
+		
 		if (hit.collider != null)
 		{
 			playerBody.velocity *= walkingFriction;
@@ -73,7 +78,7 @@ public class PlayerMovement : MonoBehaviour {
 				stillTime = 0;
 			}
 
-			if (Mathf.Abs(playerBody.rotation) > 45 && stillTime > 1)
+			if (lyingDown && stillTime > 1)
 			{
 				stillTime = 0;
 				playerBody.AddForce(playerBody.mass * jumpBackUpForce * Vector3.up);
