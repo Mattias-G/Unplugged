@@ -6,6 +6,13 @@ public class Socket : Activator {
 
 	private Plug connectedPlug;
 	private float cooldown;
+	private ParticleSystem sparkEffect;
+
+	public override void Start()
+	{
+		base.Start();
+		sparkEffect = transform.GetChild(0).GetComponent<ParticleSystem>();
+	}
 
 	private void Update()
 	{
@@ -17,6 +24,7 @@ public class Socket : Activator {
 	{
 		connectedPlug = plug;
 		ActivateObjects();
+		sparkEffect.Play();
 	}
 
 	public void Disconnect()
