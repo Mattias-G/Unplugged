@@ -1,4 +1,4 @@
-﻿﻿using System.Collections;
+﻿﻿﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,7 +9,7 @@ public class ShootCable : MonoBehaviour {
 	public int maxLength = 10;
 
 	private new Rigidbody2D rigidbody;
-	private Rigidbody2D plug;
+	private Plug plug;
 	private Stack<Rigidbody2D> segments;
 	private Rigidbody2D segment;
 	private SliderJoint2D slider;
@@ -33,13 +33,22 @@ public class ShootCable : MonoBehaviour {
 				CreatePlug();
 				segment.GetComponent<CableData>().SetPlug(plug.GetComponent<Plug>());
 			}
-
+		} else {
+			if (Input.GetMouseButtonDown(1)) {
+				if (plug.IsConnected()) {
+					plug.Disconnect();
+				}
+			}
 		}
 	}
 
 	void FixedUpdate() {
 		shootingTimer -= Time.fixedDeltaTime;
+
 		if (segment) {
+			if (shootingTimer <= 0)
+				slider.useLimits = UseSliderLimits;
+
 			var vertical = Input.GetAxisRaw("Vertical");
 
 			if (slider.jointTranslation > .5 && LengthRemaining > 0 && (vertical > 0 || IsShooting)) {
@@ -55,7 +64,9 @@ public class ShootCable : MonoBehaviour {
 					slider.enabled = true;
 					slider.useLimits = UseSliderLimits;
 				} else {
+					plug.Disconnect();
 					Destroy(plug.gameObject);
+					GetComponent<PlayerEnergy>().SetPlug(null);
 					segment = null;
 					plug = null;
 				}
@@ -78,10 +89,11 @@ public class ShootCable : MonoBehaviour {
 	}
 
 	private void CreatePlug() {
-		plug = Instantiate<Rigidbody2D>(cablePlug, segment.transform.position + segment.transform.right, direction);
-		plug.GetComponent<AnchoredJoint2D>().connectedBody = segment;
-		plug.AddRelativeForce(new Vector2(20, 0), ForceMode2D.Impulse);
-		GetComponent<PlayerEnergy>().SetPlug(plug.GetComponent<Plug>());
+		var plugBody = Instantiate<Rigidbody2D>(cablePlug, segment.transform.position + segment.transform.right, direction);
+		plugBody.GetComponent<AnchoredJoint2D>().connectedBody = segment;
+		plugBody.AddRelativeForce(new Vector2(20, 0), ForceMode2D.Impulse);
+		GetComponent<PlayerEnergy>().SetPlug(plugBody.GetComponent<Plug>());
+		plug = plugBody.GetComponent<Plug>();
 	}
 
 	private void CreateSegment(Vector3 position) {
