@@ -14,6 +14,7 @@ public class ShootCable : MonoBehaviour {
 	private Rigidbody2D segment;
 	private SliderJoint2D slider;
 	private Quaternion direction;
+	private float shootingTimer;
 
 	void Start () {
 		rigidbody = GetComponent<Rigidbody2D>();
@@ -21,48 +22,60 @@ public class ShootCable : MonoBehaviour {
 	}
 	
 	void Update () {
+		if (!segment) {
+			if (Input.GetMouseButtonUp(0)) {
+				shootingTimer = 0.6f;
+				var mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+				Vector2 delta = mousePosition - transform.position;
+				var angle = Mathf.Atan2(delta.y, delta.x) * 180 / Mathf.PI;
+				direction = Quaternion.Euler(0, 0, angle);
+				CreateSegment(rigidbody.position + delta.normalized * 0.3f);
+				CreatePlug();
+			}
+
+		}
+	}
+
+	void FixedUpdate() {
+		shootingTimer -= Time.fixedDeltaTime;
 		if (segment) {
-			if (slider.jointTranslation > .6 && LengthRemaining > 0) { 
-				CreateSegment(segment.transform.position + segment.transform.right * .25f);
-			} else if (slider.jointTranslation < 0.05) {
+			var vertical = Input.GetAxisRaw("Vertical");
+
+			if (slider.jointTranslation > .5 && LengthRemaining > 0 && (vertical > 0 || IsShooting)) {
+				CreateSegment(segment.transform.position + segment.transform.right * .1f);
+			} else if (slider.jointTranslation < 0 && vertical < 0) {
 				Destroy(segment.gameObject);
 				if (segments.Count > 0) {
 					segment = segments.Pop();
 					segment.GetComponent<HingeJoint2D>().enabled = false;
 					slider = segment.GetComponent<SliderJoint2D>();
 					slider.enabled = true;
+					slider.useLimits = UseSliderLimits;
 				} else {
 					Destroy(plug.gameObject);
 					segment = null;
 					plug = null;
 				}
 			}
-		} else if (Input.GetMouseButtonUp(0)) {
-			var mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-			var delta = mousePosition - transform.position;
-			var angle = Mathf.Atan2(delta.y, delta.x) * 180 / Mathf.PI;
-			direction = Quaternion.Euler(0, 0, angle);
-			CreateSegment(rigidbody.position);
-			CreatePlug(angle + 0);
-		}
-	}
 
-	void FixedUpdate() {
-		if (segment) {
-			var vertical = Input.GetAxisRaw("Vertical");
 			if (vertical != 0) {
+				SetMotorSpeed(Mathf.Sign(vertical));
 				slider.useMotor = true;
-				var motor = slider.motor;
-				motor.motorSpeed = Mathf.Sign(vertical);
-				slider.motor = motor;
 			} else {
-				slider.useMotor = false;
+				SetMotorSpeed(0);
+				slider.useMotor = !IsShooting;
 			}
 		}
 	}
 
-	private void CreatePlug(float angle) {
-		plug = Instantiate<Rigidbody2D>(cablePlug, segment.transform.position + segment.transform.right, Quaternion.Euler(0, 0, angle));
+	private void SetMotorSpeed(float speed) {
+		var motor = slider.motor;
+		motor.motorSpeed = speed;
+		slider.motor = motor;
+	}
+
+	private void CreatePlug() {
+		plug = Instantiate<Rigidbody2D>(cablePlug, segment.transform.position + segment.transform.right, direction);
 		plug.GetComponent<AnchoredJoint2D>().connectedBody = segment;
 		plug.AddRelativeForce(new Vector2(10, 0), ForceMode2D.Impulse);
 	}
@@ -83,12 +96,24 @@ public class ShootCable : MonoBehaviour {
 		slider.enabled = true;
 		slider.connectedBody = rigidbody;
 		slider.connectedAnchor = Vector2.zero;
-		slider.useLimits = LengthRemaining == 0;
+		slider.useLimits = UseSliderLimits;
 	}
 
 	private int LengthRemaining {
 		get {
 			return maxLength - segments.Count - (segment ? 1 : 0);
+		}
+	}
+
+	private bool UseSliderLimits {
+		get {
+			return LengthRemaining == 0 || !IsShooting;
+		}
+	}
+
+	private bool IsShooting {
+		get {
+			return shootingTimer > 0;
 		}
 	}
 }
