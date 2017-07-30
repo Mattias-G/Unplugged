@@ -16,7 +16,8 @@ public class PlayerEnergy : MonoBehaviour {
 
 		var r = Mathf.Min(1, 3 - dEnergy * 3);
 		var g = Mathf.Max(0, dEnergy * 3 - 1);
-		transform.GetChild(3).GetComponent<SpriteRenderer>().color = new Vector4(r, g, 0, 1);	
+		transform.GetChild(3).GetComponent<SpriteRenderer>().color = new Vector4(r, g, 0, 1);
+		transform.GetChild(3).localScale = new Vector3(1, dEnergy, 1);
 	}
 
 	public void ChangeEnergy(float dEnergy)
