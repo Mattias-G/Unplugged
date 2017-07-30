@@ -53,4 +53,9 @@ public class Plug : MonoBehaviour {
 			}
 		}
 	}
+
+	public bool IsConnected()
+	{
+		return connectedSocket != null;
+	}
 }

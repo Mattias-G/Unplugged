@@ -53,6 +53,7 @@ public class ShootCable : MonoBehaviour {
 					slider.useLimits = UseSliderLimits;
 				} else {
 					Destroy(plug.gameObject);
+					GetComponent<PlayerEnergy>().SetPlug(null);
 					segment = null;
 					plug = null;
 				}
@@ -78,6 +79,7 @@ public class ShootCable : MonoBehaviour {
 		plug = Instantiate<Rigidbody2D>(cablePlug, segment.transform.position + segment.transform.right, direction);
 		plug.GetComponent<AnchoredJoint2D>().connectedBody = segment;
 		plug.AddRelativeForce(new Vector2(10, 0), ForceMode2D.Impulse);
+		GetComponent<PlayerEnergy>().SetPlug(plug.GetComponent<Plug>());
 	}
 
 	private void CreateSegment(Vector3 position) {
