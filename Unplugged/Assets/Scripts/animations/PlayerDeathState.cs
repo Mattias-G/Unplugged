@@ -11,6 +11,8 @@ public class PlayerDeathState : StateMachineBehaviour {
 		var movement = animator.gameObject.GetComponent<PlayerMovement>();
 		movement.StopMoving();
 		movement.enabled = false;
+		var gun = animator.gameObject.GetComponent<ShootCable>();
+		gun.enabled = false;
 	}
     
 	override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
