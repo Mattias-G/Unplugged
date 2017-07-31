@@ -17,7 +17,8 @@ public class WheelMovement : MonoBehaviour {
 
 	private float input;
 	private float stillTime = 0;
-	private RaycastHit2D onGround;
+	private bool onGround;
+	private bool standingUp;
 
 	void Start ()
 	{
@@ -39,7 +40,7 @@ public class WheelMovement : MonoBehaviour {
 		var layer = LayerMask.GetMask("Ground");
 		onGround = Physics2D.Raycast(pos, dir, 0.5f, layer);
 
-		var lyingDown = Mathf.Abs(rigidbody.rotation) > 45;
+		standingUp = Mathf.Abs(rigidbody.rotation) < 45;
 
 		rigidbody.rotation = rigidbody.rotation % 360;
 		if (rigidbody.rotation > 180)
@@ -48,7 +49,7 @@ public class WheelMovement : MonoBehaviour {
 			rigidbody.rotation += 360;
 
 
-		if (!lyingDown && onGround) {
+		if (standingUp && onGround) {
 			SetSpeed(maxMovementSpeed * input);
 
 			if (input != 0 && onMovement != null) {
@@ -64,7 +65,7 @@ public class WheelMovement : MonoBehaviour {
 				stillTime = 0;
 			}
 
-			if (lyingDown && stillTime > 1) {
+			if (!standingUp && stillTime > 1) {
 				stillTime = 0;
 				rigidbody.AddForce(rigidbody.mass * jumpBackUpForce * Vector3.up);
 				rigidbody.AddTorque(rigidbody.mass * jumpBackUpTorque * -Mathf.Min(Mathf.Abs(rigidbody.rotation), 120) * Mathf.Sign(rigidbody.rotation));
@@ -95,5 +96,10 @@ public class WheelMovement : MonoBehaviour {
 	public bool IsOnGround()
 	{
 		return onGround;
+	}
+
+	public bool IsStandingUp()
+	{
+		return standingUp;
 	}
 }

@@ -27,7 +27,7 @@ public class PlayerMovement : MonoBehaviour {
 		var x = Input.GetAxisRaw("Horizontal");
 		wheelMovement.SetInput(x);
 
-		if (x != 0) {
+		if (x != 0 && wheelMovement.IsOnGround() && wheelMovement.IsStandingUp()) {
 			var scale = transform.localScale;
 			scale.x = Mathf.Sign(x);
 			transform.localScale = scale;
