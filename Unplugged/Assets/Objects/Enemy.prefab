@@ -366,7 +366,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxMovementSpeed: 1.2
   jumpBackUpForce: 50
-  jumpBackUpTorque: 0.5
+  jumpBackUpTorque: 0.25
 --- !u!114 &114775772599436072
 MonoBehaviour:
   m_ObjectHideFlags: 1

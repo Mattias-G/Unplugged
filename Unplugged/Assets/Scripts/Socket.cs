@@ -45,6 +45,11 @@ public class Socket : Activator {
 		DeactivateObjects();
 	}
 
+	public bool IsConnected()
+	{
+		return connectedPlug != null;
+	}
+
 	public bool CanConnect()
 	{
 		return cooldown <= 0;
