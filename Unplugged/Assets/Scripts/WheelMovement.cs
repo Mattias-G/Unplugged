@@ -17,6 +17,7 @@ public class WheelMovement : MonoBehaviour {
 
 	private float input;
 	private float stillTime = 0;
+	private RaycastHit2D onGround;
 
 	void Start ()
 	{
@@ -36,7 +37,7 @@ public class WheelMovement : MonoBehaviour {
 		var pos = new Vector2(transform.position.x, transform.position.y);
 		var dir = Vector2.down;
 		var layer = LayerMask.GetMask("Ground");
-		var isOnGround = Physics2D.Raycast(pos, dir, 0.5f, layer);
+		onGround = Physics2D.Raycast(pos, dir, 0.5f, layer);
 
 		var lyingDown = Mathf.Abs(rigidbody.rotation) > 45;
 
@@ -47,7 +48,7 @@ public class WheelMovement : MonoBehaviour {
 			rigidbody.rotation += 360;
 
 
-		if (!lyingDown && isOnGround) {
+		if (!lyingDown && onGround) {
 			SetSpeed(maxMovementSpeed * input);
 
 			if (input != 0 && onMovement != null) {
@@ -57,7 +58,7 @@ public class WheelMovement : MonoBehaviour {
 			SetSpeed(0);
 		}
 
-		if (isOnGround) {
+		if (onGround) {
 			stillTime += Time.fixedDeltaTime;
 			if (Mathf.Abs(rigidbody.angularVelocity) > 1) {
 				stillTime = 0;
@@ -89,5 +90,10 @@ public class WheelMovement : MonoBehaviour {
 	public void AddOnMovementCallback(OnMovement onMovement)
 	{
 		this.onMovement += onMovement;
+	}
+
+	public bool IsOnGround()
+	{
+		return onGround;
 	}
 }

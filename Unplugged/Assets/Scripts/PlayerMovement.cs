@@ -5,13 +5,17 @@ using UnityEngine;
 [RequireComponent(typeof(WheelMovement))]
 public class PlayerMovement : MonoBehaviour {
 
+	public float swingForce;
+
+	private new Rigidbody2D rigidbody;
 	private WheelMovement wheelMovement;
 	private FeetDisplacement feet;
 	private PlayerEnergy energy;
 
 	void Start()
     {
-		GetComponent<Rigidbody2D>().centerOfMass = new Vector2(0, -0.2f);
+		rigidbody = GetComponent<Rigidbody2D>();
+		rigidbody.centerOfMass = new Vector2(0, -0.2f);
 		wheelMovement = GetComponent<WheelMovement>();
 		wheelMovement.AddOnMovementCallback(OnMovement);
 		feet = transform.GetChild(1).GetComponent<FeetDisplacement>();
@@ -27,6 +31,14 @@ public class PlayerMovement : MonoBehaviour {
 			var scale = transform.localScale;
 			scale.x = Mathf.Sign(x);
 			transform.localScale = scale;
+		}
+	}
+
+	void FixedUpdate()
+	{
+		if (!wheelMovement.IsOnGround()) {
+			var x = Input.GetAxisRaw("Horizontal");
+			rigidbody.AddForce(Vector2.right * x * swingForce, ForceMode2D.Force);
 		}
 	}
 
