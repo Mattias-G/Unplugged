@@ -48,7 +48,7 @@ public class ShootCable : MonoBehaviour {
 		shootingTimer -= Time.fixedDeltaTime;
 
 		if (segment) {
-			if (shootingTimer <= 0)
+			if (shootingTimer <= 0 && slider)
 				slider.useLimits = UseSliderLimits;
 
 			var vertical = Input.GetAxisRaw("Vertical");
@@ -57,21 +57,7 @@ public class ShootCable : MonoBehaviour {
 				CreateSegment(rigidbody.position);
 				segment.GetComponent<CableData>().SetPlug(plug.GetComponent<Plug>());
 			} else if (slider.jointTranslation < 0 && vertical < 0) {
-				Destroy(segment.gameObject);
-				if (segments.Count > 0) {
-					segment = segments.Pop();
-					segment.GetComponent<HingeJoint2D>().enabled = false;
-					slider = segment.GetComponent<SliderJoint2D>();
-					slider.enabled = true;
-					slider.useLimits = UseSliderLimits;
-				} else {
-					if (plug.IsConnected())
-						plug.Disconnect();
-					Destroy(plug.gameObject);
-					GetComponent<PlayerEnergy>().SetPlug(null);
-					segment = null;
-					plug = null;
-				}
+				RemoveSegment();
 			}
 
 			if (vertical != 0) {
@@ -80,6 +66,35 @@ public class ShootCable : MonoBehaviour {
 			} else {
 				SetMotorSpeed(0);
 				slider.useMotor = !IsShooting;
+			}
+		}
+	}
+
+	private void RemoveSegment()
+	{
+		Destroy(segment.gameObject);
+		segment = null;
+
+		if (segments.Count == 0) {
+			if (plug.IsConnected())
+				plug.Disconnect();
+			Destroy(plug.gameObject);
+			GetComponent<PlayerEnergy>().SetPlug(null);
+			plug = null;
+		}
+
+		while (!segment && segments.Count > 0) {
+			segment = segments.Pop();
+			if (segment) {
+				var hinge = segment.GetComponent<HingeJoint2D>();
+				if (hinge)
+					hinge.enabled = false;
+				slider = segment.GetComponent<SliderJoint2D>();
+				slider.enabled = true;
+				slider.useLimits = UseSliderLimits;
+			} else {
+				segments.Clear();
+				GetComponent<PlayerEnergy>().SetPlug(null);
 			}
 		}
 	}
