@@ -10,6 +10,7 @@ public class ParallaxScrolling : MonoBehaviour {
 	private Transform bg2r;
 	private Transform bg3l;
 	private Transform bg3r;
+	private Transform textBackground;
 
 	void Start ()
 	{
@@ -19,6 +20,7 @@ public class ParallaxScrolling : MonoBehaviour {
 		bg1r = transform.GetChild(3);
 		bg2r = transform.GetChild(4);
 		bg3r = transform.GetChild(5);
+		textBackground = transform.GetChild(6);
 		transform.DetachChildren();
 	}
 	
@@ -40,5 +42,6 @@ public class ParallaxScrolling : MonoBehaviour {
 		bg2r.position = new Vector3(transform.position.x - dx2 + 20, transform.position.y - Mathf.Max(-2, transform.position.y / 10), 0);
 		bg3l.position = new Vector3(transform.position.x - dx3, transform.position.y - Mathf.Max(-1, transform.position.y / 20), 0);
 		bg3r.position = new Vector3(transform.position.x - dx3 + 16, transform.position.y - Mathf.Max(-1, transform.position.y / 20), 0);
+		textBackground.position = new Vector3(transform.position.x / 2, transform.position.y - Mathf.Max(-3, transform.position.y / 5), 0);
 	}
 }
