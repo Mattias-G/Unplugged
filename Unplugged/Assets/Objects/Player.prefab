@@ -438,7 +438,7 @@ MonoBehaviour:
   cablePlug: {fileID: 50369002004676578, guid: 8778e3ece3bb7ab4fb2cb45fe12b5893, type: 2}
   maxLength: 15
   segmentLength: 0.3
-  force: 30
+  force: 20
 --- !u!114 &114711295856832884
 MonoBehaviour:
   m_ObjectHideFlags: 1

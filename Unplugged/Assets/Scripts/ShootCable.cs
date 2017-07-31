@@ -37,9 +37,7 @@ public class ShootCable : MonoBehaviour {
 			}
 		} else {
 			if (Input.GetMouseButtonDown(1)) {
-				if (plug.IsConnected()) {
-					plug.Disconnect();
-				}
+				plug.Disconnect();
 			}
 		}
 	}
@@ -67,6 +65,10 @@ public class ShootCable : MonoBehaviour {
 				SetMotorSpeed(0);
 				slider.useMotor = !IsShooting;
 			}
+		} else if (segments.Count > 0) {
+			segments.Clear();
+			plug.Disconnect();
+			GetComponent<PlayerEnergy>().SetPlug(null);
 		}
 	}
 
@@ -76,8 +78,7 @@ public class ShootCable : MonoBehaviour {
 		segment = null;
 
 		if (segments.Count == 0) {
-			if (plug.IsConnected())
-				plug.Disconnect();
+			plug.Disconnect();
 			Destroy(plug.gameObject);
 			GetComponent<PlayerEnergy>().SetPlug(null);
 			plug = null;
@@ -94,6 +95,7 @@ public class ShootCable : MonoBehaviour {
 				slider.useLimits = UseSliderLimits;
 			} else {
 				segments.Clear();
+				plug.Disconnect();
 				GetComponent<PlayerEnergy>().SetPlug(null);
 			}
 		}
@@ -109,7 +111,7 @@ public class ShootCable : MonoBehaviour {
 		var plugBody = Instantiate<Rigidbody2D>(cablePlug, segment.transform.position + segment.transform.right.normalized * 0.1f, direction);
 		plugBody.GetComponent<AnchoredJoint2D>().connectedBody = segment;
 		plugBody.AddForce(plugBody.transform.right * force, ForceMode2D.Impulse);
-		rigidbody.AddForce(plugBody.transform.right * -force, ForceMode2D.Impulse);
+		rigidbody.AddForce(plugBody.transform.right * -force / 2, ForceMode2D.Impulse);
 		GetComponent<PlayerEnergy>().SetPlug(plugBody.GetComponent<Plug>());
 		plug = plugBody.GetComponent<Plug>();
 	}
