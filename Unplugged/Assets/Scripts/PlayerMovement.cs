@@ -9,7 +9,8 @@ public class PlayerMovement : MonoBehaviour {
 	private FeetDisplacement feet;
 	private PlayerEnergy energy;
 
-	void Start () {
+	void Start()
+    {
 		GetComponent<Rigidbody2D>().centerOfMass = new Vector2(0, -0.2f);
 		wheelMovement = GetComponent<WheelMovement>();
 		wheelMovement.AddOnMovementCallback(OnMovement);
@@ -17,7 +18,8 @@ public class PlayerMovement : MonoBehaviour {
 		energy = GetComponent<PlayerEnergy>();
 	}
 	
-	void Update () {
+	void Update()
+    {
 		wheelMovement.SetInput(Input.GetAxisRaw("Horizontal"));
 	}
 
@@ -27,4 +29,8 @@ public class PlayerMovement : MonoBehaviour {
 		energy.ChangeEnergy(-Time.fixedDeltaTime * Mathf.Abs(movementX));
 	}
 
+    public void StopMoving()
+    {
+        wheelMovement.SetInput(0);
+    }
 }
