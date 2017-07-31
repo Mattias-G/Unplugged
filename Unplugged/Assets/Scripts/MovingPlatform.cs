@@ -7,18 +7,19 @@ public class MovingPlatform : Activatable {
 	public DirectionChange.Direction direction = DirectionChange.Direction.Left;
 	[Range(0, 100)]
 	public float speed = 1;
+	private Vector2 currentSpeed;
 
 	private Vector3 DirectionToVector()
 	{
 		switch (direction) {
 			case DirectionChange.Direction.Up:
-				return new Vector3(0, 1, 0);
+				return Vector2.up;
 			case DirectionChange.Direction.Down:
-				return new Vector3(0, -1, 0);
+				return Vector2.down;
 			case DirectionChange.Direction.Left:
-				return new Vector3(-1, 0, 0);
+				return Vector2.left;
 			case DirectionChange.Direction.Right:
-				return new Vector3(1, 0, 0);
+				return Vector2.right;
 		}
 
 		return Vector2.zero;
@@ -27,8 +28,14 @@ public class MovingPlatform : Activatable {
 	void Update()
 	{
 		if (IsActive()) {
+			var decrease = Mathf.Max(Time.deltaTime * 5, speed * Time.deltaTime/2);
+			currentSpeed += (Vector2)DirectionToVector() * decrease;
+			if (currentSpeed.magnitude > speed) {
+				currentSpeed = currentSpeed.normalized * speed;
+			}
+
 			var body = GetComponent<Rigidbody2D>();
-			body.velocity = DirectionToVector() * speed;
+			body.velocity = currentSpeed;
 		}
 	}
 
@@ -44,8 +51,8 @@ public class MovingPlatform : Activatable {
 	{
 		var body = collider.GetComponent<Rigidbody2D>();
 		if (body) {
-			//body.AddForce(DirectionToVector()*speed*4.5f);
-			body.position += (Vector2)DirectionToVector() * speed * Time.deltaTime;
+			//body.AddForce(DirectionToVector() * speed*0.1f);
+			//body.position += (Vector2)DirectionToVector() * speed * Time.deltaTime;
 		}
 	}
 }

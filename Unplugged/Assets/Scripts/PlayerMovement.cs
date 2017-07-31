@@ -20,6 +20,8 @@ public class PlayerMovement : MonoBehaviour {
 
 	void Start () {
 		playerBody = GetComponent<Rigidbody2D>();
+		playerBody.centerOfMass = new Vector2(0, -0.2f);
+
 		feet = transform.GetChild(1).GetComponent<FeetDisplacement>();
 		energy = GetComponent<PlayerEnergy>();
 		wheels = new List<HingeJoint2D>();
