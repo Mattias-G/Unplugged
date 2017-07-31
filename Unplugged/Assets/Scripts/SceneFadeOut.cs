@@ -6,7 +6,7 @@ using System.Collections;
 public class SceneFadeOut : MonoBehaviour
 {
 	public Color fadeColor;
-    public float timeBeforeFade = 10f;
+	public float timeBeforeFade = 0f;
 	public float fadeTime = 2f;
 	public float blackTime = 1f;
 	public string targetScene;
