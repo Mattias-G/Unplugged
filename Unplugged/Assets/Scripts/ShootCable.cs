@@ -80,10 +80,12 @@ public class ShootCable : MonoBehaviour {
 
 	private void RemoveSegment()
 	{
-		Destroy(segment.gameObject);
-		segment = null;
+		if (segments.Count > 0 || !plug.IsConnected()) {
+			Destroy(segment.gameObject);
+			segment = null;
+		}
 
-		if (segments.Count == 0) {
+		if (segments.Count == 0 && !segment) {
 			plug.Disconnect();
 			Destroy(plug.gameObject);
 			GetComponent<PlayerEnergy>().SetPlug(null);
