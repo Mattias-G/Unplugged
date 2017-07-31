@@ -1,4 +1,4 @@
-﻿﻿﻿using System.Collections;
+﻿﻿﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,6 +9,7 @@ public class ShootCable : MonoBehaviour {
 	public int maxLength = 10;
 	public float segmentLength = .3f;
 	public float force = 30;
+	public float motorSpeed = 2;
 
 	private new Rigidbody2D rigidbody;
 	private Plug plug;
@@ -50,6 +51,8 @@ public class ShootCable : MonoBehaviour {
 				slider.useLimits = UseSliderLimits;
 
 			var vertical = Input.GetAxisRaw("Vertical");
+			if (IsCutOff())
+				vertical = -1;
 
 			if (slider.jointTranslation >= segmentLength && LengthRemaining > 0 && (vertical > 0 || IsShooting)) {
 				CreateSegment(rigidbody.position);
@@ -59,17 +62,20 @@ public class ShootCable : MonoBehaviour {
 			}
 
 			if (vertical != 0) {
-				SetMotorSpeed(Mathf.Sign(vertical) * 2);
+				SetMotorSpeed(Mathf.Sign(vertical) * motorSpeed);
 				slider.useMotor = true;
 			} else {
 				SetMotorSpeed(0);
 				slider.useMotor = !IsShooting;
 			}
 		} else if (segments.Count > 0) {
-			segments.Clear();
-			plug.Disconnect();
-			GetComponent<PlayerEnergy>().SetPlug(null);
+			SegmentCutOff();
 		}
+	}
+
+	private bool IsCutOff()
+	{
+		return Array.Exists(segments.ToArray(), s => !s);
 	}
 
 	private void RemoveSegment()
@@ -94,11 +100,16 @@ public class ShootCable : MonoBehaviour {
 				slider.enabled = true;
 				slider.useLimits = UseSliderLimits;
 			} else {
-				segments.Clear();
-				plug.Disconnect();
-				GetComponent<PlayerEnergy>().SetPlug(null);
+				SegmentCutOff();
 			}
 		}
+	}
+
+	private void SegmentCutOff()
+	{
+		segments.Clear();
+		plug.Disconnect();
+		GetComponent<PlayerEnergy>().SetPlug(null);
 	}
 
 	private void SetMotorSpeed(float speed) {
