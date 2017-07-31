@@ -44,6 +44,11 @@ public class MovingPlatform : Activatable {
 		var change = collider.gameObject.GetComponent<DirectionChange>();
 		if (change) {
 			direction = change.newDirection;
+			
+			if (change.instantTurn) {
+				var body = GetComponent<Rigidbody2D>();
+				currentSpeed = DirectionToVector() * speed;
+			}
 		}
 	}
 
