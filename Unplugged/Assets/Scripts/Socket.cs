@@ -5,8 +5,10 @@ using UnityEngine;
 public class Socket : Activator {
 
 	private Plug connectedPlug;
-	private float cooldown;
+	private AnchoredJoint2D joint;
 	private ParticleSystem sparkEffect;
+
+	private float cooldown;
 
 	public Vector3 direction {
 		get {
@@ -22,6 +24,7 @@ public class Socket : Activator {
 	public override void Start()
 	{
 		base.Start();
+		joint = GetComponent<AnchoredJoint2D>();
 		sparkEffect = transform.GetChild(0).GetComponent<ParticleSystem>();
 	}
 
@@ -36,6 +39,10 @@ public class Socket : Activator {
 		connectedPlug = plug;
 		ActivateObjects();
 		sparkEffect.Play();
+		if (joint) {
+			joint.enabled = true;
+			joint.connectedBody = plug.GetComponent<Rigidbody2D>();
+		}
 	}
 
 	public void Disconnect()
@@ -43,6 +50,8 @@ public class Socket : Activator {
 		connectedPlug = null;
 		cooldown = .5f;
 		DeactivateObjects();
+		if (joint)
+			joint.enabled = false;
 	}
 
 	public bool IsConnected()
