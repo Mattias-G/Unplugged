@@ -8,6 +8,17 @@ public class Socket : Activator {
 	private float cooldown;
 	private ParticleSystem sparkEffect;
 
+	public Vector3 direction {
+		get {
+			float scale = 1;
+			if (transform.parent) {
+				scale = transform.parent.localScale.x;
+			}
+			var direction = transform.right * scale;
+			return direction.normalized;
+		}
+	}
+
 	public override void Start()
 	{
 		base.Start();
