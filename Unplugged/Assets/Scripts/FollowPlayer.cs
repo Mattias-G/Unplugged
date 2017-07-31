@@ -16,8 +16,9 @@ public class FollowPlayer : MonoBehaviour {
         if (player) {
             var camera = Camera.main;
             var position = player.transform.position;
-            position.z = camera.transform.position.z;
-            camera.transform.position = position;
+			position.y += 1;
+			position.z = camera.transform.position.z;
+			camera.transform.position = position;
         }
 	}
 
