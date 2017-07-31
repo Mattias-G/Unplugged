@@ -599,7 +599,10 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: By Mattias Gustafsson, Sebastian Hjelm and Markus Olsson
+  m_Text: 'By Mattias Gustafsson, Sebastian Hjelm and Markus Olsson
+
+
+    Music: Better days by bensound'
 --- !u!114 &114107444738592614
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -632,7 +635,10 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: By Mattias Gustafsson, Sebastian Hjelm and Markus Olsson
+  m_Text: 'By Mattias Gustafsson, Sebastian Hjelm and Markus Olsson
+
+
+    Music: Better days by bensound'
 --- !u!114 &114154099447266278
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -665,7 +671,10 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: By Mattias Gustafsson, Sebastian Hjelm and Markus Olsson
+  m_Text: 'By Mattias Gustafsson, Sebastian Hjelm and Markus Olsson
+
+
+    Music: Better days by bensound'
 --- !u!114 &114217973427003832
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -775,7 +784,10 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: By Mattias Gustafsson, Sebastian Hjelm and Markus Olsson
+  m_Text: 'By Mattias Gustafsson, Sebastian Hjelm and Markus Olsson
+
+
+    Music: Better days by bensound'
 --- !u!114 &114327807387364562
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1011,7 +1023,10 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: By Mattias Gustafsson, Sebastian Hjelm and Markus Olsson
+  m_Text: 'By Mattias Gustafsson, Sebastian Hjelm and Markus Olsson
+
+
+    Music: Better days by bensound'
 --- !u!114 &114913365287041970
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1639,7 +1654,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -51, y: -25.000088}
-  m_SizeDelta: {x: 550, y: 60}
+  m_SizeDelta: {x: 550, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224207388450786492
 RectTransform:
@@ -1675,7 +1690,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -50.00026, y: -24.999996}
-  m_SizeDelta: {x: 550, y: 60}
+  m_SizeDelta: {x: 550, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224444120735161504
 RectTransform:
@@ -1729,7 +1744,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -51.000965, y: -24}
-  m_SizeDelta: {x: 550, y: 60}
+  m_SizeDelta: {x: 550, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224782030879907658
 RectTransform:
@@ -1747,7 +1762,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -51.999344, y: -25}
-  m_SizeDelta: {x: 550, y: 60}
+  m_SizeDelta: {x: 550, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224817732997150756
 RectTransform:
@@ -1801,7 +1816,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -51.00001, y: -26.00001}
-  m_SizeDelta: {x: 550, y: 60}
+  m_SizeDelta: {x: 550, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224942620548267786
 RectTransform:
