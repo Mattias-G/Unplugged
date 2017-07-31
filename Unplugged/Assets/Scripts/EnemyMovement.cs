@@ -36,9 +36,9 @@ public class EnemyMovement : MonoBehaviour {
 
 		if (powered) {
 			int layers = LayerMask.GetMask("Ground");
-			var right = transform.right * transform.localScale.x;
+			var right = Vector2.right * transform.localScale.x;
 			var wallHit = Physics2D.Raycast(transform.position, right, .8f, layers);
-			var groundHit = Physics2D.Raycast(transform.position, right * 2 - transform.up, 2f, layers);
+			var groundHit = Physics2D.Raycast(transform.position, right * 2 - Vector2.up, 2f, layers);
 
 			var input = Mathf.Sign(transform.localScale.x);
 			if ((wallHit || !groundHit) && flipCooldown < 0) {
