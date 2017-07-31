@@ -23,6 +23,8 @@ public class Plug : MonoBehaviour {
 			lerp = Mathf.Clamp01(lerp + Time.deltaTime / LerpTimeSeconds);
 			var targetPosition = connectedSocket.transform.position - connectedSocket.transform.up*0.01f;
 			var targetRotation = Quaternion.FromToRotation(Vector3.right, connectedSocket.direction);
+			if (targetRotation.eulerAngles.y != 0)
+				targetRotation = Quaternion.Euler(new Vector3(0, 0, 180));
 			transform.position = Vector3.Lerp(initialPosition, targetPosition, lerp);
 			transform.rotation = Quaternion.Lerp(initialRotation, targetRotation, lerp);
 		}
