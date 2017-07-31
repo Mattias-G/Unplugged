@@ -4,18 +4,24 @@ using UnityEngine;
 
 public class DeathZone : MonoBehaviour {
 
-    public GameObject faderPrefab;
+    public enum DeathCause {
+        FallingOutOfWorld, Explosion
+    }
+
+    public DeathCause causeOfDeath = DeathCause.FallingOutOfWorld;
     
 	void OnTriggerEnter2D(Collider2D collider)
     {
-        if (collider.gameObject.CompareTag("Player")) {
-            var camera = GameObject.FindGameObjectWithTag("MainCamera");
-            camera.GetComponent<FollowPlayer>().Detach();
-            
-            string currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
-            var faderObject = (GameObject)Instantiate(faderPrefab, Vector3.zero, Quaternion.identity);
-            var sceneFader = faderObject.GetComponent<SceneFadeOut>();
-            sceneFader.targetScene = currentScene;
+        var death = collider.GetComponent<PlayerDeath>();
+        if (death) {
+            switch (causeOfDeath) {
+                case DeathCause.FallingOutOfWorld:
+                    death.FellOutOfWorld();
+                    break;
+                case DeathCause.Explosion:
+                    death.Explode();
+                    break;
+            }
         }
     }
 

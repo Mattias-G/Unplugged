@@ -5,16 +5,16 @@ using System.Collections;
 
 public class SceneFadeOut : MonoBehaviour
 {
-	
 	public Color fadeColor;
+    public float timeBeforeFade = 10f;
 	public float fadeTime = 2f;
 	public float blackTime = 1f;
 	public string targetScene;
-	public bool waitForDialog = true;
 	
 	private Image fadingOverlay;
 	private float fadeCounter;
 	private float blackCounter;
+    private float waitCounter;
 
 	void Awake()
 	{
@@ -31,9 +31,9 @@ public class SceneFadeOut : MonoBehaviour
 
 	private IEnumerator FadeAndLoadScene()
 	{
-		yield return new WaitUntil(HasFinishedFading);
-		yield return new WaitWhile(() => !CanSwitchScene());
-		SceneManager.LoadScene(targetScene);
+        yield return new WaitUntil(HasFinishedFading);
+        yield return new WaitWhile(() => !CanSwitchScene());
+        SceneManager.LoadScene(targetScene);
 	}
 
 	protected virtual bool CanSwitchScene()
@@ -48,14 +48,18 @@ public class SceneFadeOut : MonoBehaviour
 
 	public virtual void Update()
 	{
-		fadeCounter += Time.deltaTime;
-		fadeCounter = Mathf.Clamp(fadeCounter, 0, fadeTime);
+        if (waitCounter < timeBeforeFade) {
+            waitCounter += Time.deltaTime;
+        } else {
+            fadeCounter += Time.deltaTime;
+            fadeCounter = Mathf.Clamp(fadeCounter, 0, fadeTime);
 
-		if (fadeCounter == fadeTime)
-			blackCounter += Time.deltaTime;
+            if (fadeCounter == fadeTime)
+                blackCounter += Time.deltaTime;
 
-		float alpha = fadeCounter / fadeTime;
-		fadingOverlay.color = new Color(fadeColor.r, fadeColor.g, fadeColor.b, alpha);
+            float alpha = fadeCounter / fadeTime;
+            fadingOverlay.color = new Color(fadeColor.r, fadeColor.g, fadeColor.b, alpha);
+        }
 	}
 
 	protected virtual void OnSceneWasLoaded(Scene scene, LoadSceneMode mode)
