@@ -2,15 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(WheelMovement))]
 public class EnemyMovement : MonoBehaviour {
 
 	public bool initialDirectionLeft;
 
-	private List<HingeJoint2D> wheels;
+	private WheelMovement wheelMovement;
 
 	void Start ()
 	{
-		wheels = new List<HingeJoint2D>(GetComponentsInChildren<HingeJoint2D>());
+		wheelMovement = GetComponent<WheelMovement>();
+		wheelMovement.SetInput(1);
 		if (initialDirectionLeft)
 			FlipDirection();
 	}
@@ -30,13 +32,6 @@ public class EnemyMovement : MonoBehaviour {
 	private void FlipDirection()
 	{
 		transform.localScale = Vector3.Scale(transform.localScale, new Vector3(-1, 1, 1));
-		wheels.ForEach(FlipSpeed);
-	}
-
-	private void FlipSpeed(HingeJoint2D wheel)
-	{
-		var motor = wheel.motor;
-		motor.motorSpeed *= -1;
-		wheel.motor = motor;
+		wheelMovement.SetInput(Mathf.Sign(transform.localScale.x));
 	}
 }

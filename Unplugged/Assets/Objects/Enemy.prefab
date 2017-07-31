@@ -57,6 +57,7 @@ GameObject:
   - component: {fileID: 212603515454009048}
   - component: {fileID: 61193889782559002}
   - component: {fileID: 50355750778792582}
+  - component: {fileID: 114455267422774396}
   - component: {fileID: 114204870004266360}
   m_Layer: 0
   m_Name: Enemy
@@ -352,6 +353,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialDirectionLeft: 0
+--- !u!114 &114455267422774396
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1303460595085200}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e98bb09b18bdf584e8266302376f490f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxMovementSpeed: 1.2
+  jumpBackUpForce: 50
+  jumpBackUpTorque: 0.5
 --- !u!114 &114775772599436072
 MonoBehaviour:
   m_ObjectHideFlags: 1
