@@ -11,13 +11,15 @@ public class PlayerEnergy : MonoBehaviour {
 	private Transform energyMeter;
 	private SpriteRenderer energyMeterSprite;
 
-	void Start() {
+	void Start()
+    {
 		energy = maxEnergy;
 		energyMeter = transform.GetChild(3);
 		energyMeterSprite = energyMeter.GetComponent<SpriteRenderer>();
 	}
 	
-	void Update() {
+	void Update()
+    {
 		var dEnergy = energy / maxEnergy;
 
 		var r = Mathf.Min(1, 3 - dEnergy * 3);
@@ -38,8 +40,11 @@ public class PlayerEnergy : MonoBehaviour {
 		energy += dEnergy;
 		if (energy > maxEnergy)
 			energy = maxEnergy;
-		if (energy < 0)
-			energy = 0;
+        if (energy < 0) {
+            energy = 0;
+            var animator = GetComponent<Animator>();
+            animator.SetTrigger("No Power");
+        }
 	}
 
 	public void SetPlug(Plug plug)
