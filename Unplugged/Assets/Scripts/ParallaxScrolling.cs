@@ -27,10 +27,10 @@ public class ParallaxScrolling : MonoBehaviour {
 		var dx1 = ((transform.position.x / 2) % 24);
 		if (dx1 < 0)
 			dx1 += 24;
-		var dx2 = ((transform.position.x / 2) % 20);
+		var dx2 = ((transform.position.x / 3) % 20);
 		if (dx2 < 0)
 			dx2 += 20;
-		var dx3 = ((transform.position.x / 2) % 16);
+		var dx3 = ((transform.position.x / 4) % 16);
 		if (dx3 < 0)
 			dx3 += 16;
 
