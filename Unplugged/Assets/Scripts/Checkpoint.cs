@@ -11,6 +11,8 @@ public class Checkpoint : MonoBehaviour {
 	{
 		if (respawnPoint != new Vector3(0, 0, 0))
 			transform.position = respawnPoint;
+		else
+			GetComponent<ShootCable>().Shoot(160, 4);
 	}
 	
 	public void UpdateCheckpoint(Transform target)

@@ -27,19 +27,26 @@ public class ShootCable : MonoBehaviour {
 	void Update () {
 		if (!segment) {
 			if (Input.GetMouseButtonUp(0)) {
-				shootingTimer = 1.0f;
 				var mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 				Vector2 delta = mousePosition - transform.position;
 				var angle = Mathf.Atan2(delta.y, delta.x) * 180 / Mathf.PI;
-				direction = Quaternion.Euler(0, 0, angle);
-				CreateSegment(rigidbody.position);
-				CreatePlug();
-				segment.GetComponent<CableData>().SetPlug(plug.GetComponent<Plug>());
+				Shoot(angle, force);
 			}
 		} else {
 			if (Input.GetMouseButtonDown(1)) {
 				plug.Disconnect();
 			}
+		}
+	}
+
+	public void Shoot(float angle, float force)
+	{
+		if (!segment) {
+			shootingTimer = 1.0f;
+			direction = Quaternion.Euler(0, 0, angle);
+			CreateSegment(rigidbody.position);
+			CreatePlug(force);
+			segment.GetComponent<CableData>().SetPlug(plug.GetComponent<Plug>());
 		}
 	}
 
@@ -120,7 +127,7 @@ public class ShootCable : MonoBehaviour {
 		slider.motor = motor;
 	}
 
-	private void CreatePlug() {
+	private void CreatePlug(float force) {
 		var plugBody = Instantiate<Rigidbody2D>(cablePlug, segment.transform.position + segment.transform.right.normalized * 0.1f, direction);
 		plugBody.GetComponent<AnchoredJoint2D>().connectedBody = segment;
 		plugBody.AddForce(plugBody.transform.right * force, ForceMode2D.Impulse);
