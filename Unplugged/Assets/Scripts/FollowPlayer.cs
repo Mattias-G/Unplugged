@@ -13,9 +13,16 @@ public class FollowPlayer : MonoBehaviour {
 	
 	void LateUpdate ()
 	{
-		var camera = Camera.main;
-		var position = player.transform.position;
-		position.z = camera.transform.position.z;
-		camera.transform.position = position;
+        if (player) {
+            var camera = Camera.main;
+            var position = player.transform.position;
+            position.z = camera.transform.position.z;
+            camera.transform.position = position;
+        }
 	}
+
+    public void Detach()
+    {
+        player = null;
+    }
 }

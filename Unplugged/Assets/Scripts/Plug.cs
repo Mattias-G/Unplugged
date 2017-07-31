@@ -38,7 +38,7 @@ public class Plug : MonoBehaviour {
 				//var angleDiff = Quaternion.Angle(socket.transform.rotation, transform.rotation);
 				var dot = Vector2.Dot(socket.direction, transform.right.normalized);
 
-				if (dot > -.2f)  // How big an interval should we allow?
+				if (dot > .2f)  // How big an interval should we allow?
 				{
 					connectedSocket = socket;
 					socket.Connect(this);
