@@ -93,7 +93,8 @@ public class ShootCable : MonoBehaviour {
 	private void CreatePlug() {
 		var plugBody = Instantiate<Rigidbody2D>(cablePlug, segment.transform.position + segment.transform.right.normalized * 0.1f, direction);
 		plugBody.GetComponent<AnchoredJoint2D>().connectedBody = segment;
-		plugBody.AddRelativeForce(new Vector2(force, 0), ForceMode2D.Impulse);
+		plugBody.AddForce(plugBody.transform.right * force, ForceMode2D.Impulse);
+		rigidbody.AddForce(plugBody.transform.right * -force, ForceMode2D.Impulse);
 		GetComponent<PlayerEnergy>().SetPlug(plugBody.GetComponent<Plug>());
 		plug = plugBody.GetComponent<Plug>();
 	}
