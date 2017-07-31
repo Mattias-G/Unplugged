@@ -8,6 +8,13 @@ public class MovingPlatform : Activatable {
 	[Range(0, 100)]
 	public float speed = 1;
 	private Vector2 currentSpeed;
+	private Rigidbody2D body;
+
+	public override void Start()
+	{
+		body = GetComponent<Rigidbody2D>();
+		base.Start();
+	}
 
 	private Vector3 DirectionToVector()
 	{
@@ -28,15 +35,19 @@ public class MovingPlatform : Activatable {
 	void Update()
 	{
 		if (IsActive()) {
-			var decrease = Mathf.Max(Time.deltaTime * 5, speed * Time.deltaTime/2);
-			currentSpeed += (Vector2)DirectionToVector() * decrease;
+			var change = Mathf.Max(Time.deltaTime * 5, speed * Time.deltaTime/2);
+			currentSpeed += (Vector2)DirectionToVector() * change;
 			if (currentSpeed.magnitude > speed) {
 				currentSpeed = currentSpeed.normalized * speed;
 			}
 
-			var body = GetComponent<Rigidbody2D>();
-			body.velocity = currentSpeed;
 		}
+		else
+		{
+			currentSpeed *= 0.95f;
+		}
+
+		body.velocity = currentSpeed;
 	}
 
 	void OnTriggerEnter2D(Collider2D collider)
