@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class Activator : Activatable {
-	public Activatable[] activatables;
+	public Activatable[] activatables = new Activatable[0];
 
 	public override void Start() {
 		base.Start();
