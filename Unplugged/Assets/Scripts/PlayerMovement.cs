@@ -20,7 +20,14 @@ public class PlayerMovement : MonoBehaviour {
 	
 	void Update()
     {
-		wheelMovement.SetInput(Input.GetAxisRaw("Horizontal"));
+		var x = Input.GetAxisRaw("Horizontal");
+		wheelMovement.SetInput(x);
+
+		if (x != 0) {
+			var scale = transform.localScale;
+			scale.x = Mathf.Sign(x);
+			transform.localScale = scale;
+		}
 	}
 
 	private void OnMovement(float movementX)

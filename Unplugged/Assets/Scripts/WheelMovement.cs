@@ -47,7 +47,7 @@ public class WheelMovement : MonoBehaviour {
 			rigidbody.rotation += 360;
 
 
-		if (!lyingDown) {
+		if (!lyingDown && isOnGround) {
 			SetSpeed(maxMovementSpeed * input);
 
 			if (input != 0 && onMovement != null) {
