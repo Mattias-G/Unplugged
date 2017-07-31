@@ -10,8 +10,11 @@ public class EnemyMovement : MonoBehaviour {
 	private WheelMovement wheelMovement;
 	private Socket socket;
 
+	private float flipCooldown;
+
 	void Start ()
 	{
+		GetComponent<Rigidbody2D>().centerOfMass = new Vector2(0, -0.2f);
 		wheelMovement = GetComponent<WheelMovement>();
 		wheelMovement.AddOnMovementCallback(OnMovement);
 		wheelMovement.SetInput(1);
@@ -29,6 +32,8 @@ public class EnemyMovement : MonoBehaviour {
 		if (socket && socket.IsConnected())
 			powered = false;
 
+		flipCooldown -= Time.fixedDeltaTime;
+
 		if (powered) {
 			int layers = LayerMask.GetMask("Ground");
 			var right = transform.right * transform.localScale.x;
@@ -36,8 +41,10 @@ public class EnemyMovement : MonoBehaviour {
 			var groundHit = Physics2D.Raycast(transform.position, right * 2 - transform.up, 2f, layers);
 
 			var input = Mathf.Sign(transform.localScale.x);
-			if (wallHit || !groundHit)
+			if ((wallHit || !groundHit) && flipCooldown < 0) {
+				flipCooldown = 1;
 				input = -input;
+			}
 			
 			wheelMovement.SetInput(input);
 		} else {

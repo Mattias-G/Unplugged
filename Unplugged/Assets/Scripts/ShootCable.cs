@@ -19,7 +19,7 @@ public class ShootCable : MonoBehaviour {
 	private float shootingTimer;
 
 	void Start () {
-		rigidbody = GetComponentInChildren<HingeJoint2D>().GetComponent<Rigidbody2D>(); ;
+		rigidbody = transform.GetChild(4).GetComponent<Rigidbody2D>(); ;
 		segments = new Stack<Rigidbody2D>();
 	}
 	
@@ -31,7 +31,7 @@ public class ShootCable : MonoBehaviour {
 				Vector2 delta = mousePosition - transform.position;
 				var angle = Mathf.Atan2(delta.y, delta.x) * 180 / Mathf.PI;
 				direction = Quaternion.Euler(0, 0, angle);
-				CreateSegment(rigidbody.position + delta.normalized * 0.1f);
+				CreateSegment(rigidbody.position);
 				CreatePlug();
 				segment.GetComponent<CableData>().SetPlug(plug.GetComponent<Plug>());
 			}
@@ -54,8 +54,7 @@ public class ShootCable : MonoBehaviour {
 			var vertical = Input.GetAxisRaw("Vertical");
 
 			if (slider.jointTranslation >= segmentLength && LengthRemaining > 0 && (vertical > 0 || IsShooting)) {
-				//CreateSegment(segment.transform.position + segment.transform.right * .0f);
-				CreateSegment(transform.position);
+				CreateSegment(rigidbody.position);
 				segment.GetComponent<CableData>().SetPlug(plug.GetComponent<Plug>());
 			} else if (slider.jointTranslation < 0 && vertical < 0) {
 				Destroy(segment.gameObject);
@@ -92,7 +91,7 @@ public class ShootCable : MonoBehaviour {
 	}
 
 	private void CreatePlug() {
-		var plugBody = Instantiate<Rigidbody2D>(cablePlug, segment.transform.position + segment.transform.right, direction);
+		var plugBody = Instantiate<Rigidbody2D>(cablePlug, segment.transform.position + segment.transform.right.normalized * 0.1f, direction);
 		plugBody.GetComponent<AnchoredJoint2D>().connectedBody = segment;
 		plugBody.AddRelativeForce(new Vector2(force, 0), ForceMode2D.Impulse);
 		GetComponent<PlayerEnergy>().SetPlug(plugBody.GetComponent<Plug>());
